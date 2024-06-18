@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.post ('/signup', signup)
 router.post ('/signin', signin)
-router.put('/verifyOtp', verifyOtp)
-router.post('/resendOtp', resendOtp)
+router.put('/verify-otp', verifyOtp)
+router.post('/resend-otp', resendOtp)
 
 module.exports = router
