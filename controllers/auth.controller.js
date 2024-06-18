@@ -3,6 +3,7 @@ const {signUpSchema, signInSchema, verifyOtpSchema, resendOtpSchema} = require("
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs')
 const usersService = require("../services/users.service");
+const {sendOTP} = require("../services/mailer.service");
 require('dotenv').config()
 const signup = async (req, res) => {
     try {
@@ -22,7 +23,9 @@ const signup = async (req, res) => {
         }
 
         const emailToken = generateNumericToken(6)
+
         await usersService.createUser({firstName, lastName, email, password, emailToken})
+        // sendOTP(email, emailToken)
         return res.status(201).json({
             success: true,
             message: "Signup successful! Check email for OTP",
@@ -162,14 +165,14 @@ const resendOtp = async (req, res) => {
             emailVerified: false,
             tokenExpiration: new Date()
         })
-
+        // sendOTP(user.email, emailToken)
         return res.status(200).json({
             success: true,
             message: "Otp resent!",
             otp: emailToken
         })
     } catch (e) {
-        console.error()
+        console.error(e)
         return res.status(500).json({
             success: false,
             message: 'Something went wrong'
