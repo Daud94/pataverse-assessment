@@ -113,7 +113,7 @@ const verifyOtp = async (req, res) => {
         const difInMillisecond = new Date().getTime() - new Date(user.tokenExpiration).getTime()
         let timeDiff = Math.round(difInMillisecond / 1000 / 60)
 
-        if (timeDiff > 5) {
+        if (timeDiff > 1) {
             return res.status(400).json({
                 success: false,
                 message: 'Expired otp!'
@@ -126,6 +126,7 @@ const verifyOtp = async (req, res) => {
                 message: 'Invalid otp'
             })
         }
+
         await user.update({emailToken: null, emailVerified: true})
 
         return res.status(200).json({
